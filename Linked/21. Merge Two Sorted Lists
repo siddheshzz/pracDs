@@ -1,0 +1,161 @@
+21. Merge Two Sorted Lists
+
+You are given the heads of two sorted linked lists list1 and list2.
+
+Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+Return the head of the merged linked list.
+
+ 
+
+Example 1:
+
+Input: list1 = [1,2,4], list2 = [1,3,4]
+Output: [1,1,2,3,4,4]
+
+Example 2:
+
+Input: list1 = [], list2 = []
+Output: []
+
+Example 3:
+
+Input: list1 = [], list2 = [0]
+Output: [0]
+-----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+
+Iterative:
+
+public class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode(0);
+        ListNode handler = head;
+        while(l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                handler.next = l1;
+                l1 = l1.next;
+            } else {
+                handler.next = l2;
+                l2 = l2.next;
+            }
+            handler = handler.next;
+        }
+        
+        if (l1 != null) {
+            handler.next = l1;
+        } else if (l2 != null) {
+            handler.next = l2;
+        }
+        
+        return head.next;
+    }
+}
+
+
+Recursive:
+
+public class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+        
+        ListNode handler;
+        if(l1.val < l2.val) {
+            handler = l1;
+            handler.next = mergeTwoLists(l1.next, l2);
+        } else {
+            handler = l2;
+            handler.next = mergeTwoLists(l1, l2.next);
+        }
+        
+        return handler;
+    }
+}
+
+My Sh*tty solution:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode main1 = new ListNode();
+        ListNode spoint = new ListNode();
+        int flag=0;
+        main1=spoint;
+        if(list1==null && list2==null){
+            return list1;
+        }
+        if(list1==null){
+            return list2;
+        }
+        if(list2==null){
+            return list1;
+        }
+        if(list1.val<list2.val){
+            spoint.val=list1.val;
+            list1=list1.next;
+        }
+        else{
+            spoint.val=list2.val;
+            list2=list2.next;
+        }
+        while(list1!=null && list1.next!=null){
+            if(list1.val<list2.val){
+                ListNode a = new ListNode(list1.val);
+                spoint.next=a;
+                list1=list1.next;
+            }
+            else{
+                ListNode a = new ListNode(list2.val);
+                spoint.next=a;
+                list2 = list2.next;
+            }
+            spoint=spoint.next;
+        }
+        
+        ListNode t1 = new ListNode(list1.val);
+  
+        while(list2!=null && list2.next!=null){
+            ListNode a = new ListNode(list2.val);
+            if(a.val<t1.val){
+            spoint.next=a;
+            list2 = list2.next;
+            }
+            else{
+                
+                spoint.next=t1;
+                flag=1;
+                
+            }
+            spoint=spoint.next;
+        }
+        if(list2!=null){
+        ListNode t2 = new ListNode(list2.val);
+        if(t1.val<=t2.val && flag==0){
+             spoint.next=t1;
+             spoint=spoint.next;
+            flag=1;
+            
+        }}
+        if(flag==0){
+            spoint.next=t1;
+             spoint=spoint.next;
+            
+        }
+        spoint.next=t2;
+        spoint = spoint.next;
+        return main1;
+    }
+}
+
+
+
+
