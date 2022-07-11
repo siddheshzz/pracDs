@@ -1,0 +1,61 @@
+Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.
+
+Do not modify the linked list.
+
+ 
+
+Example 1:
+
+Input: head = [3,2,0,-4], pos = 1
+Output: tail connects to node index 1
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+
+Example 2:
+
+Input: head = [1,2], pos = 0
+Output: tail connects to node index 0
+Explanation: There is a cycle in the linked list, where tail connects to the first node.
+
+Example 3:
+
+Input: head = [1], pos = -1
+Output: no cycle
+Explanation: There is no cycle in the linked list.
+
+ 
+
+Constraints:
+
+    The number of the nodes in the list is in the range [0, 104].
+    -105 <= Node.val <= 105
+    pos is -1 or a valid index in the linked-list.
+=========================================================================================================
+
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) break;
+        }
+        if (fast == null || fast.next == null) return null;
+        while (head != slow) {
+            head = head.next;
+            slow = slow.next;
+        }
+        return head;
+    }
+}
+
+
+
+i have seen proof previously as well but till date i don't understand
+1.)why we take fast pointer to be twice as fast of slow, i mean if we take fast as (any number>1) times faster then also they would meet
+and also
+2.)why is distance travelled by fast - distance travelled by slow == some multiple of cycle length ?
+
+It isn't necessary to take fast pointer as twice you can take it any times if you are using it to find cycle is present in the list however you have to put extra condition to check weather the next->next->next->next * number of times you want should be checked using condition before going in the loop other wise it will throw error if cycle is not present. If cycle is present you can put any times next as you want. but if cycle isn't present you have to check all conditions.
+For you second question it will muliple of cycle length because it have to run cycle n no of times till when slow will be equal to fast. so it will be always some multiple of cycle for fast pointer.
